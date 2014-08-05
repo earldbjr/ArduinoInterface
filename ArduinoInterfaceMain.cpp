@@ -1,6 +1,6 @@
 
 /***************************************************************
- * Name:      ArduinoInterfaceMain.cpp
+ * Name:      ArduinoInterfaceMain.cpp wireless?
  * Purpose:   Code for Application Frame
  * Author:    Gizmo (earldbjr@gmail.com)
  * Created:   2014-07-16
