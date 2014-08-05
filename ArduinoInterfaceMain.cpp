@@ -40,6 +40,9 @@ char chInstruction[5]= {'1','0','0','0','0'};
 //*)
 
 //helper functions
+
+
+
 enum wxbuildinfoformat {
   short_f, long_f };
 
@@ -174,8 +177,10 @@ ArduinoInterfaceFrame::ArduinoInterfaceFrame(wxWindow* parent,wxWindowID id)
   Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&ArduinoInterfaceFrame::OnbtnSendTestClick);
   Connect(idMenuQuit,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&ArduinoInterfaceFrame::OnQuit);
   Connect(idMenuAbout,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&ArduinoInterfaceFrame::OnAbout);
+  Connect(wxID_ANY,wxEVT_CLOSE_WINDOW,(wxObjectEventFunction)&ArduinoInterfaceFrame::closePortThenClose);
   //*)
 }
+
 
 ArduinoInterfaceFrame::~ArduinoInterfaceFrame()
 {
@@ -287,4 +292,10 @@ void ArduinoInterfaceFrame::OnchDevIDSelect(wxCommandEvent& event)
     Fit();
     break;
   }
+}
+
+void ArduinoInterfaceFrame::closePortThenClose(wxCloseEvent& event)
+{
+    close(fd);
+    Destroy();
 }

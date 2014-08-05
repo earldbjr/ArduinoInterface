@@ -1480,7 +1480,7 @@
 1405555100 /home/gizmo/Documents/ArduinoInterface/ArduinoInterfaceApp.h
 	<wx/app.h>
 
-1407106467 /home/gizmo/Documents/ArduinoInterface/ArduinoInterfaceMain.h
+1407210200 /home/gizmo/Documents/ArduinoInterface/ArduinoInterfaceMain.h
 	<wx/sizer.h>
 	<wx/button.h>
 	<wx/menu.h>
@@ -1490,7 +1490,7 @@
 	<wx/stattext.h>
 	<wx/choice.h>
 
-1407107688 source:/home/gizmo/Documents/ArduinoInterface/ArduinoInterfaceMain.cpp
+1407210233 source:/home/gizmo/Documents/ArduinoInterface/ArduinoInterfaceMain.cpp
 	"wx_pch.h"
 	"ArduinoInterfaceMain.h"
 	<wx/msgdlg.h>

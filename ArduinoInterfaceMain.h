@@ -40,6 +40,7 @@ class ArduinoInterfaceFrame: public wxFrame
         void OnbtnOffClick(wxCommandEvent& event);
         void OnChoice2Select(wxCommandEvent& event);
         void OnchDevIDSelect(wxCommandEvent& event);
+        void closePortThenClose(wxCloseEvent& event);
         //*)
 
         //(*Identifiers(ArduinoInterfaceFrame)
