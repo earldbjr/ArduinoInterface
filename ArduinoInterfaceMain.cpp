@@ -30,6 +30,7 @@
 #include <wx/combobox.h>
 //#include "arduino-serial-lib.h"
 #define PORT "/dev/ttyACM0"
+#define PORT1 "/dev/ttyACM1"
 #define BAUD 9600
 using namespace  std;
 int fd;
@@ -41,7 +42,8 @@ char chInstruction[5]= {'1','0','0','0','0'};
 
 //helper functions
 
-
+int openPort();
+int closePort(int);
 
 enum wxbuildinfoformat {
   short_f, long_f };
@@ -177,8 +179,8 @@ ArduinoInterfaceFrame::ArduinoInterfaceFrame(wxWindow* parent,wxWindowID id)
   Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&ArduinoInterfaceFrame::OnbtnSendTestClick);
   Connect(idMenuQuit,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&ArduinoInterfaceFrame::OnQuit);
   Connect(idMenuAbout,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&ArduinoInterfaceFrame::OnAbout);
-  Connect(wxID_ANY,wxEVT_CLOSE_WINDOW,(wxObjectEventFunction)&ArduinoInterfaceFrame::closePortThenClose);
   //*)
+  fd = openPort();
 }
 
 
@@ -199,7 +201,8 @@ void ArduinoInterfaceFrame::OnAbout(wxCommandEvent& event)
 int openPort(){
 
        int fd = open(PORT, O_RDWR | O_NOCTTY | O_NDELAY);
-
+       closePort(fd);
+if(fd == -1){fd = open(PORT1, O_RDWR | O_NOCTTY | O_NDELAY);}
     struct termios config;
 
     if(tcgetattr(fd, &config) < 0){
@@ -228,20 +231,16 @@ return close(fd);
 }
 
 int transmit(){
- fd = openPort();
 char buf[5];
 int len = sprintf(buf, "%s", chInstruction);
 write(fd, chInstruction, len);
- closePort(fd);
 }
 
 void ArduinoInterfaceFrame::OnbtnSendTestClick(wxCommandEvent& event)
 {
- fd = openPort();
 char buf[5];
 int len = sprintf(buf, "%s", chInstruction);
 write(fd, chInstruction, len);
- closePort(fd);
 }
 
 void ArduinoInterfaceFrame::OncbDeviceIDSelected(wxCommandEvent& event)
