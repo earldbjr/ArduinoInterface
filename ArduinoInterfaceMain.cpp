@@ -27,22 +27,20 @@
 #include <fstream>
 #include <string.h>
 #include <wx/combobox.h>
+#include "arduinoserial.h"
 //#include "arduino-serial-lib.h"
 #define PORT "/dev/ttyACM0"
 #define PORT1 "/dev/ttyACM1"
 #define BAUD 9600
 using namespace  std;
 int fd;
-char chInstruction[5]= {'1','0','0','0','0'};
 //(*InternalHeaders(ArduinoInterfaceFrame)
 #include <wx/string.h>
 #include <wx/intl.h>
 //*)
 
-//helper functions
-
-int openPort();
-int closePort(int);
+ArduinoSerial serial(PORT,BAUD);
+//serial.openPort();
 
 enum wxbuildinfoformat
 {
@@ -181,7 +179,7 @@ ArduinoInterfaceFrame::ArduinoInterfaceFrame(wxWindow* parent,wxWindowID id)
     Connect(idMenuQuit,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&ArduinoInterfaceFrame::OnQuit);
     Connect(idMenuAbout,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&ArduinoInterfaceFrame::OnAbout);
     //*)
-    fd = openPort();
+    serial.openPort();
 }
 
 
@@ -199,58 +197,14 @@ void ArduinoInterfaceFrame::OnAbout(wxCommandEvent& event)
     wxMessageBox(msg, _("Welcome to..."));
 }
 
-int openPort()
-{
 
-    int fd = open(PORT, O_RDWR | O_NOCTTY | O_NDELAY);
-    if(fd == -1)
-    {
-        closePort(fd);
-        fd = open(PORT1, O_RDWR | O_NOCTTY | O_NDELAY);
-    }
-    struct termios config;
-
-    if(tcgetattr(fd, &config) < 0)
-    {
-        //  cout << "tcgetattr: fd < 0";
-    }
-
-    config.c_iflag  &= ~(IGNBRK | BRKINT  | ICRNL | INLCR | PARMRK | INPCK | ISTRIP | IXON);
-    //~(Turn off processing | Convert break to null byte | No CR->NL | No NL->CR | Ignore Parity Errors | Dont strip high bit | no flow control);
-    config.c_oflag = 0;
-    config.c_lflag &= ~(ECHO | ECHONL | ICANON | IEXTEN | ISIG);
-    config.c_cflag &= ~(CSIZE | PARENB);
-    config.c_cflag  |= CS8;
-    config.c_cc[VMIN] = 1;
-    config.c_cc[VTIME] = 0;
-    if(cfsetispeed(&config, B9600)  < 0 || cfsetospeed(&config, B9600) < 0)
-    {
-        //  cout << "Problem setting Baud to 9600";
-    }
-    if(tcsetattr(fd, TCSAFLUSH, &config) < 0)
-    {
-        //  cout << "Problem setting attributes to fd";
-    }
-    return(fd);
-}
-
-int closePort(int fd)
-{
-    return close(fd);
-}
-
-int transmit()
-{
-    char buf[5];
-    int len = sprintf(buf, "%s", chInstruction);
-    write(fd, chInstruction, len);
-}
 
 void ArduinoInterfaceFrame::OnbtnSendTestClick(wxCommandEvent& event)
 {
-    char buf[5];
-    int len = sprintf(buf, "%s", chInstruction);
-    write(fd, chInstruction, len);
+    //deprecated
+    //char buf[5];
+    //int len = sprintf(buf, "%s", chInstruction);
+    //write(fd, chInstruction, len);
 }
 
 void ArduinoInterfaceFrame::OncbDeviceIDSelected(wxCommandEvent& event)
@@ -260,34 +214,34 @@ void ArduinoInterfaceFrame::OncbDeviceIDSelected(wxCommandEvent& event)
 
 void ArduinoInterfaceFrame::OnbtnOnClick(wxCommandEvent& event)
 {
-    chInstruction[1]='1'; //Select LED
-    chInstruction[2]='1'; //ON
-    chInstruction[3]='0';
-    chInstruction[4]='0';
-    transmit();
+    serial.setFunction('1'); //Select LED
+    serial.setInstruction('1'); //ON
+    serial.setOpt1('0');
+    serial.setOpt2('0');
+    serial.transmit();
 }
 
 void ArduinoInterfaceFrame::OnbtnOffClick(wxCommandEvent& event)
 {
-    chInstruction[1]='1'; //Select LED
-    chInstruction[2]='2'; //OFF
-    chInstruction[3]='0';
-    chInstruction[4]='0';
-    transmit();
+    serial.setFunction('1'); //Select LED
+    serial.setInstruction('2'); //ON
+    serial.setOpt1('0');
+    serial.setOpt2('0');
+    serial.transmit();
 }
 
 void ArduinoInterfaceFrame::OnQuit(wxCommandEvent& event)
 {
-    closePort(fd);
+    serial.closePort();
     Close();
 }
 
 void ArduinoInterfaceFrame::OnchDevIDSelect(wxCommandEvent& event)
 {
+serial.setDevice(chDevID->GetSelection()+1); //+1 to reserve 0
 
-    chInstruction[0] = (chDevID->GetSelection()+1); //Reads the position of the selection, not the value. +1 to reserve 0
     //lblResponse->SetLabel(wxString::Format(wxT("%i"), chrInstruction[0])); //Uncomment to test
-    switch(chInstruction[0])
+    switch(serial.getDevice())
     {
     case 1:
         Panel2->Hide();
@@ -306,6 +260,6 @@ void ArduinoInterfaceFrame::OnchDevIDSelect(wxCommandEvent& event)
 
 void ArduinoInterfaceFrame::closePortThenClose(wxCloseEvent& event)
 {
-    close(fd);
+    serial.closePort();
     Destroy();
 }
