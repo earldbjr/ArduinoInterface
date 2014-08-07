@@ -198,19 +198,19 @@ void ArduinoInterfaceFrame::OncbDeviceIDSelected(wxCommandEvent& event)
 
 void ArduinoInterfaceFrame::OnbtnOnClick(wxCommandEvent& event)
 {
-    serial.setFunction('1'); //Select LED
-    serial.setInstruction('1'); //ON
-    serial.setOpt1('0');
-    serial.setOpt2('0');
+    serial.setFunction(1); //Select LED
+    serial.setInstruction(1); //ON
+    serial.setOpt1(0);
+    serial.setOpt2(0);
     serial.transmit();
 }
 
 void ArduinoInterfaceFrame::OnbtnOffClick(wxCommandEvent& event)
 {
-    serial.setFunction('1'); //Select LED
-    serial.setInstruction('2'); //ON
-    serial.setOpt1('0');
-    serial.setOpt2('0');
+    serial.setFunction(1); //Select LED
+    serial.setInstruction(2); //OFF
+    serial.setOpt1(0);
+    serial.setOpt2(0);
     serial.transmit();
 }
 

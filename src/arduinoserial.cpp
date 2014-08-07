@@ -1,19 +1,6 @@
 #include "arduinoserial.h"
 #include <fcntl.h>
 #include <termios.h>
-
-ArduinoSerial::ArduinoSerial(char _PORT)
-{
-PORT = _PORT; //Changes # in /dev/ttyACM#
-        chInstruction[0]='1';
-        chInstruction[1]='0';
-        chInstruction[2]='0';
-        chInstruction[3]='0';
-        chInstruction[4]='0';
-        chInstruction[5]='\0';
-        ArduinoSerial::openPort(PORT);
-}
-
 int ArduinoSerial::openPort(char PORT)
 {
     ArduinoSerial::closePort();
@@ -51,6 +38,20 @@ int ArduinoSerial::openPort(char PORT)
     }
     return(fd);
 }
+
+ArduinoSerial::ArduinoSerial(char _PORT)
+{
+PORT = _PORT; //Changes # in /dev/ttyACM#
+        chInstruction[0]='1';
+        chInstruction[1]='0';
+        chInstruction[2]='0';
+        chInstruction[3]='0';
+        chInstruction[4]='0';
+        chInstruction[5]='\0';
+        ArduinoSerial::openPort(PORT);
+}
+
+
 
 void ArduinoSerial::closePort()
 {
