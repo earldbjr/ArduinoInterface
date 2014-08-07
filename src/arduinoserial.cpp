@@ -60,7 +60,7 @@ void ArduinoSerial::closePort()
 int ArduinoSerial::transmit()
 {
     char buf[5];
-    chInstruction[4]='4';
+    chInstruction[4]='4';//debugging
     int len = sprintf(buf, "%s", chInstruction);
     return(write(fd, buf, len));//-1 = fail
 }
@@ -71,11 +71,11 @@ void ArduinoSerial::changePort(int newPORT)
     ArduinoSerial::openPort(newPORT);
 }
 
-void ArduinoSerial::setDevice       (int value){chInstruction[0] = '0'+value;}
-void ArduinoSerial::setFunction     (int value){chInstruction[1] =value;}// '0'+value;}
-void ArduinoSerial::setInstruction  (int value){chInstruction[2] =value;}// '0'+value;}
-void ArduinoSerial::setOpt1         (int value){chInstruction[3] =value;}// '0'+value;}
-void ArduinoSerial::setOpt2         (int value){chInstruction[4] =value;}// '0'+value;}
+void ArduinoSerial::setDevice       (int value){chInstruction[0] = (char)value+48;}
+void ArduinoSerial::setFunction     (int value){chInstruction[1] = (char)value+48;}
+void ArduinoSerial::setInstruction  (int value){chInstruction[2] = (char)value+48;}
+void ArduinoSerial::setOpt1         (int value){chInstruction[3] = (char)value+48;}
+void ArduinoSerial::setOpt2         (int value){chInstruction[4] = (char)value+48;}
 
 int ArduinoSerial::getDevice()      {return chInstruction[0];}
 int ArduinoSerial::getFunction()    {return chInstruction[1];}

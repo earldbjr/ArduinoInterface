@@ -222,19 +222,20 @@ void ArduinoInterfaceFrame::OnQuit(wxCommandEvent& event)
 
 void ArduinoInterfaceFrame::OnchDevIDSelect(wxCommandEvent& event)
 {
-    char device = (char)chDevID->GetSelection()+1;
+   int device = chDevID->GetSelection()+1;
 serial.setDevice(device); //+1 to reserve 0
+serial.transmit();
 
     //lblResponse->SetLabel(wxString::Format(wxT("%i"), chrInstruction[0])); //Uncomment to test
     switch(serial.getDevice())
     {
-    case 1:
+    case '1':
         Panel2->Hide();
         Panel1->Show();
         GetSizer()->Layout();//Resizes the Sizer around the Objects
         Fit();//Resizes the Window around the Sizer
         break;
-    case 2:
+    case '2':
         Panel1->Hide();
         Panel2->Show();
         GetSizer()->Layout();
