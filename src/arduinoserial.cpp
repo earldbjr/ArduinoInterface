@@ -2,6 +2,18 @@
 #include <fcntl.h>
 #include <termios.h>
 
+ArduinoSerial::ArduinoSerial(char _PORT)
+{
+PORT = _PORT; //Changes # in /dev/ttyACM#
+        chInstruction[0]='1';
+        chInstruction[1]='0';
+        chInstruction[2]='0';
+        chInstruction[3]='0';
+        chInstruction[4]='0';
+        chInstruction[5]='\0';
+        ArduinoSerial::openPort(PORT);
+}
+
 int ArduinoSerial::openPort(char PORT)
 {
     ArduinoSerial::closePort();
@@ -40,18 +52,6 @@ int ArduinoSerial::openPort(char PORT)
     return(fd);
 }
 
-ArduinoSerial::ArduinoSerial(char _PORT)
-{
-PORT = _PORT; //Changes # in /dev/ttyACM#
-        chInstruction[0]='1';
-        chInstruction[1]='0';
-        chInstruction[2]='0';
-        chInstruction[3]='0';
-        chInstruction[4]='0';
-        chInstruction[5]='\0';
-        ArduinoSerial::openPort(PORT);
-}
-
 void ArduinoSerial::closePort()
 {
     close(fd);
@@ -67,11 +67,12 @@ int ArduinoSerial::transmit()
 
 void ArduinoSerial::changePort(int newPORT)
 {
+
     ArduinoSerial::closePort();
     ArduinoSerial::openPort(newPORT);
 }
 
-void ArduinoSerial::setDevice       (int value){chInstruction[0] = (char)value+48;}
+void ArduinoSerial::setDevice       (int value){chInstruction[0] = (char)value+48;} //48 = ASCII 0
 void ArduinoSerial::setFunction     (int value){chInstruction[1] = (char)value+48;}
 void ArduinoSerial::setInstruction  (int value){chInstruction[2] = (char)value+48;}
 void ArduinoSerial::setOpt1         (int value){chInstruction[3] = (char)value+48;}
