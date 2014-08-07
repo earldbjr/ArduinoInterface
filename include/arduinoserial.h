@@ -6,10 +6,11 @@
 class ArduinoSerial
 {
     public:
-        ArduinoSerial(char[13], int);
+        ArduinoSerial(char);
         void closePort();
-        int openPort();
+        int openPort(char);
         int transmit();
+        void changePort(int value);
         void setDevice(int value);
         void setFunction(int value);
         void setInstruction(int value);
@@ -22,9 +23,8 @@ class ArduinoSerial
         int getOpt2();
     protected:
     private:
-        char chInstruction[6];
-        char PORT[13];
-        int BAUD;
+        char chInstruction[5];
+        char PORT;
         int fd;
 };
 

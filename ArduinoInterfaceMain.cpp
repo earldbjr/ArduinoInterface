@@ -16,22 +16,11 @@
 #include "wx_pch.h"
 #include "ArduinoInterfaceMain.h"
 #include <wx/msgdlg.h>
-
-#include <iostream>
-#include <termios.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <fcntl.h>
-#include <errno.h>
-#include <sys/ioctl.h>
-#include <fstream>
-#include <string.h>
-#include <wx/combobox.h>
 #include "arduinoserial.h"
-//#include "arduino-serial-lib.h"
-#define PORT "/dev/ttyACM0"
-#define PORT1 "/dev/ttyACM1"
-#define BAUD 9600
+
+//#define PORT "/dev/ttyACM0"
+//#define PORT1 "/dev/ttyACM1"
+char PORT = '0';
 using namespace  std;
 int fd;
 //(*InternalHeaders(ArduinoInterfaceFrame)
@@ -39,8 +28,7 @@ int fd;
 #include <wx/intl.h>
 //*)
 
-ArduinoSerial serial(PORT,BAUD);
-//serial.openPort();
+ArduinoSerial serial(PORT);
 
 enum wxbuildinfoformat
 {
@@ -179,7 +167,7 @@ ArduinoInterfaceFrame::ArduinoInterfaceFrame(wxWindow* parent,wxWindowID id)
     Connect(idMenuQuit,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&ArduinoInterfaceFrame::OnQuit);
     Connect(idMenuAbout,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&ArduinoInterfaceFrame::OnAbout);
     //*)
-    serial.openPort();
+    //serial.openPort(PORT);
 }
 
 
@@ -201,10 +189,6 @@ void ArduinoInterfaceFrame::OnAbout(wxCommandEvent& event)
 
 void ArduinoInterfaceFrame::OnbtnSendTestClick(wxCommandEvent& event)
 {
-    //deprecated
-    //char buf[5];
-    //int len = sprintf(buf, "%s", chInstruction);
-    //write(fd, chInstruction, len);
 }
 
 void ArduinoInterfaceFrame::OncbDeviceIDSelected(wxCommandEvent& event)
@@ -238,7 +222,8 @@ void ArduinoInterfaceFrame::OnQuit(wxCommandEvent& event)
 
 void ArduinoInterfaceFrame::OnchDevIDSelect(wxCommandEvent& event)
 {
-serial.setDevice(chDevID->GetSelection()+1); //+1 to reserve 0
+    char device = (char)chDevID->GetSelection()+1;
+serial.setDevice(device); //+1 to reserve 0
 
     //lblResponse->SetLabel(wxString::Format(wxT("%i"), chrInstruction[0])); //Uncomment to test
     switch(serial.getDevice())

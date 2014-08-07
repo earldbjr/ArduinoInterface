@@ -1,29 +1,14 @@
 #include "arduinoserial.h"
 #include <fcntl.h>
 #include <termios.h>
-ArduinoSerial::ArduinoSerial(char a[], int b)
-{
-    for(int i=0; i<14; i++){
-        PORT[i] = a[i];
-    }
-    BAUD = b;
-        chInstruction[0]='1';
-        chInstruction[1]='0';
-        chInstruction[2]='0';
-        chInstruction[3]='0';
-        chInstruction[4]='0';
-        chInstruction[5]='\0';
-}
 
-void ArduinoSerial::closePort()
+int ArduinoSerial::openPort(char PORT)
 {
-    close(fd);
-}
+    ArduinoSerial::closePort();
+    char chPortName[13]="/dev/ttyACM0";
+    chPortName[13] = PORT;
 
-int ArduinoSerial::openPort()
-{
-
-    fd = open(PORT, O_RDWR | O_NOCTTY | O_NDELAY);
+    int fd = open(chPortName, O_RDWR | O_NOCTTY | O_NDELAY);
 
     struct termios config;
 
@@ -48,28 +33,53 @@ int ArduinoSerial::openPort()
     {
         //  cout << "Problem setting attributes to fd";
     }
-    if(fd == -1){
+    if(fd == 2){
         ArduinoSerial::closePort();
+        return(fd);
     }
     return(fd);
+}
+
+ArduinoSerial::ArduinoSerial(char _PORT)
+{
+PORT = _PORT; //Changes # in /dev/ttyACM#
+        chInstruction[0]='1';
+        chInstruction[1]='0';
+        chInstruction[2]='0';
+        chInstruction[3]='0';
+        chInstruction[4]='0';
+        chInstruction[5]='\0';
+        ArduinoSerial::openPort(PORT);
+}
+
+void ArduinoSerial::closePort()
+{
+    close(fd);
 }
 
 int ArduinoSerial::transmit()
 {
     char buf[5];
+    chInstruction[4]='4';
     int len = sprintf(buf, "%s", chInstruction);
-    return(write(fd, chInstruction, len));//-1 = fail
+    return(write(fd, buf, len));//-1 = fail
 }
 
-void ArduinoSerial::setDevice(int value){chInstruction[0] = value;}
-void ArduinoSerial::setFunction(int value){chInstruction[1] = value;}
-void ArduinoSerial::setInstruction(int value){chInstruction[2]  = value;}
-void ArduinoSerial::setOpt1(int value){chInstruction[3] = value;}
-void ArduinoSerial::setOpt2(int value){chInstruction[4] = value;}
+void ArduinoSerial::changePort(int newPORT)
+{
+    ArduinoSerial::closePort();
+    ArduinoSerial::openPort(newPORT);
+}
 
-int ArduinoSerial::getDevice(){return chInstruction[0];}
-int ArduinoSerial::getFunction(){return chInstruction[1];}
-int ArduinoSerial::getInstruction(){return chInstruction[2];}
-int ArduinoSerial::getOpt1(){return chInstruction[3];}
-int ArduinoSerial::getOpt2(){return chInstruction[4];}
+void ArduinoSerial::setDevice       (int value){chInstruction[0] = '0'+value;}
+void ArduinoSerial::setFunction     (int value){chInstruction[1] =value;}// '0'+value;}
+void ArduinoSerial::setInstruction  (int value){chInstruction[2] =value;}// '0'+value;}
+void ArduinoSerial::setOpt1         (int value){chInstruction[3] =value;}// '0'+value;}
+void ArduinoSerial::setOpt2         (int value){chInstruction[4] =value;}// '0'+value;}
+
+int ArduinoSerial::getDevice()      {return chInstruction[0];}
+int ArduinoSerial::getFunction()    {return chInstruction[1];}
+int ArduinoSerial::getInstruction() {return chInstruction[2];}
+int ArduinoSerial::getOpt1()        {return chInstruction[3];}
+int ArduinoSerial::getOpt2()        {return chInstruction[4];}
 //chInstruction[5] reserved for \0

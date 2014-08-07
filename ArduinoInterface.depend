@@ -1490,20 +1490,10 @@
 	<wx/stattext.h>
 	<wx/choice.h>
 
-1407356410 source:/home/gizmo/Documents/ArduinoInterface/ArduinoInterfaceMain.cpp
+1407370097 source:/home/gizmo/Documents/ArduinoInterface/ArduinoInterfaceMain.cpp
 	"wx_pch.h"
 	"ArduinoInterfaceMain.h"
 	<wx/msgdlg.h>
-	<iostream>
-	<termios.h>
-	<unistd.h>
-	<stdio.h>
-	<fcntl.h>
-	<errno.h>
-	<sys/ioctl.h>
-	<fstream>
-	<string.h>
-	<wx/combobox.h>
 	"arduinoserial.h"
 	<wx/string.h>
 	<wx/intl.h>
@@ -1521,11 +1511,11 @@
 	<string.h>
 	<sys/ioctl.h>
 
-1407356665 /home/gizmo/Documents/ArduinoInterface/include/arduinoserial.h
+1407370012 /home/gizmo/Documents/ArduinoInterface/include/arduinoserial.h
 	<fcntl.h>
 	<termios.h>
 
-1407357154 source:/home/gizmo/Documents/ArduinoInterface/src/arduinoserial.cpp
+1407370031 source:/home/gizmo/Documents/ArduinoInterface/src/arduinoserial.cpp
 	"arduinoserial.h"
 	<fcntl.h>
 	<termios.h>
