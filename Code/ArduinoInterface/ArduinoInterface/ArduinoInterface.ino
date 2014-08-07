@@ -15,8 +15,8 @@
 #include <LiquidCrystal.h>
 LiquidCrystal lcd(12,11,5,4,3,2);
 
-int  intMenu, intSubmenu, intChoice, intEnd = -1;
-char pointer = 0;
+//int  intMenu, intSubmenu, intChoice, intEnd = -1;
+char buffer[5];
 
 void setup(){
   lcd.begin(16, 2);
@@ -25,34 +25,24 @@ void setup(){
   pinMode(13, OUTPUT);
 }
 
-void loop(){
-  if(Serial.available()){
-    pointer = (Serial.read());
-    //intMenu = (pointer);//-48;
-    lcd.setCursor(0, 1);
-    lcd.print("                ");
-    lcd.setCursor(0, 1);
-    lcd.print("pointer");
-    Serial.println("pointer");
-    /*delay(500);
-    int first = pointer % 10;
-    int second = ((pointer/10) %10);
+void loop() {
 
-    for(int i=0; i < second; i++){
-      digitalWrite(13, HIGH);
-      delay(500);
-      digitalWrite(13,LOW);
-      delay(500);
-    }
-    delay(1000);
-    for (int i=0; i < first; i++){
-      digitalWrite(13,HIGH);
-      delay(500);
-      digitalWrite(13, LOW);
-      delay(500);
-    }*/
+  if(Serial.available()){
+    //delay(10);
+    //if(Serial.peek() == '<'){
+      //Serial.read();             // Erase <
+      delay(10);
+      for(int n=0; n<5; n++){    //Get Data
+        buffer[n] = Serial.read();
+        delay(10);
+      }
+      Serial.read();//Clear '\0', otherwise buffer refills from \0
+      lcd.setCursor(0,1);
+      for(int i=0;i<5;i++){
+        lcd.print(buffer[i]);
+        Serial.println(buffer[i]);
+      }
+    //}
+
   }
 }
-
-
-
