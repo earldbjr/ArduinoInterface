@@ -1490,11 +1490,17 @@
 	<wx/stattext.h>
 	<wx/choice.h>
 
-<<<<<<< HEAD
-1407454862 source:/home/gizmo/Documents/ArduinoInterface/ArduinoInterfaceMain.cpp
-=======
-1407454299 source:/home/gizmo/Documents/ArduinoInterface/ArduinoInterfaceMain.cpp
->>>>>>> removeCap
+1407346614 D
+
+1407455097 source:/home/gizmo/Documents/ArduinoInterface/ArduinoInterfaceMain.cpp
+	"wx_pch.h"
+	"ArduinoInterfaceMain.h"
+	<wx/msgdlg.h>
+	"arduinoserial.h"
+	<wx/string.h>
+	<wx/intl.h>
+
+1407454299 oveCap
 	"wx_pch.h"
 	"ArduinoInterfaceMain.h"
 	<wx/msgdlg.h>
@@ -1515,11 +1521,11 @@
 	<string.h>
 	<sys/ioctl.h>
 
-1407454300 /home/gizmo/Documents/ArduinoInterface/include/arduinoserial.h
+1407455097 /home/gizmo/Documents/ArduinoInterface/include/arduinoserial.h
 	<fcntl.h>
 	<termios.h>
 
-1407454579 source:/home/gizmo/Documents/ArduinoInterface/src/arduinoserial.cpp
+1407455097 source:/home/gizmo/Documents/ArduinoInterface/src/arduinoserial.cpp
 	"arduinoserial.h"
 	<fcntl.h>
 	<termios.h>
