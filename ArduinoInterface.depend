@@ -1480,7 +1480,7 @@
 1405555100 /home/gizmo/Documents/ArduinoInterface/ArduinoInterfaceApp.h
 	<wx/app.h>
 
-1407346614 /home/gizmo/Documents/ArduinoInterface/ArduinoInterfaceMain.h
+1407457253 /home/gizmo/Documents/ArduinoInterface/ArduinoInterfaceMain.h
 	<wx/sizer.h>
 	<wx/button.h>
 	<wx/menu.h>
@@ -1492,7 +1492,7 @@
 
 1407346614 D
 
-1407455097 source:/home/gizmo/Documents/ArduinoInterface/ArduinoInterfaceMain.cpp
+1407469359 source:/home/gizmo/Documents/ArduinoInterface/ArduinoInterfaceMain.cpp
 	"wx_pch.h"
 	"ArduinoInterfaceMain.h"
 	<wx/msgdlg.h>
@@ -1521,11 +1521,11 @@
 	<string.h>
 	<sys/ioctl.h>
 
-1407455097 /home/gizmo/Documents/ArduinoInterface/include/arduinoserial.h
+1407469359 /home/gizmo/Documents/ArduinoInterface/include/arduinoserial.h
 	<fcntl.h>
 	<termios.h>
 
-1407455097 source:/home/gizmo/Documents/ArduinoInterface/src/arduinoserial.cpp
+1407468550 source:/home/gizmo/Documents/ArduinoInterface/src/arduinoserial.cpp
 	"arduinoserial.h"
 	<fcntl.h>
 	<termios.h>

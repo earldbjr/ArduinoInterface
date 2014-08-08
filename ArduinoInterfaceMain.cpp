@@ -28,7 +28,7 @@ int fd;
 #include <wx/intl.h>
 //*)
 
-ArduinoSerial serial(PORT);
+ArduinoSerial serial;
 
 enum wxbuildinfoformat
 {
@@ -68,6 +68,7 @@ const long ArduinoInterfaceFrame::ID_BUTTON3 = wxNewId();
 const long ArduinoInterfaceFrame::ID_PANEL2 = wxNewId();
 const long ArduinoInterfaceFrame::ID_BUTTON1 = wxNewId();
 const long ArduinoInterfaceFrame::ID_STATICTEXT1 = wxNewId();
+const long ArduinoInterfaceFrame::ID_CHOICE3 = wxNewId();
 const long ArduinoInterfaceFrame::idMenuQuit = wxNewId();
 const long ArduinoInterfaceFrame::idMenuAbout = wxNewId();
 const long ArduinoInterfaceFrame::ID_STATUSBAR1 = wxNewId();
@@ -139,6 +140,13 @@ ArduinoInterfaceFrame::ArduinoInterfaceFrame(wxWindow* parent,wxWindowID id)
     FlexGridSizer1->Add(btnSendTest, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     lblResponse = new wxStaticText(this, ID_STATICTEXT1, _("Response"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT1"));
     FlexGridSizer1->Add(lblResponse, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    chSerialPort = new wxChoice(this, ID_CHOICE3, wxDefaultPosition, wxDefaultSize, 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE3"));
+    chSerialPort->Append(_("0"));
+    chSerialPort->Append(_("1"));
+    chSerialPort->Append(_("2"));
+    chSerialPort->Append(_("3"));
+    chSerialPort->Append(_("4"));
+    FlexGridSizer1->Add(chSerialPort, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     BoxSizer1->Add(FlexGridSizer1, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     SetSizer(BoxSizer1);
     MenuBar1 = new wxMenuBar();
@@ -164,10 +172,10 @@ ArduinoInterfaceFrame::ArduinoInterfaceFrame(wxWindow* parent,wxWindowID id)
     Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&ArduinoInterfaceFrame::OnbtnOnClick);
     Connect(ID_BUTTON4,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&ArduinoInterfaceFrame::OnbtnOffClick);
     Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&ArduinoInterfaceFrame::OnbtnSendTestClick);
+    Connect(ID_CHOICE3,wxEVT_COMMAND_CHOICE_SELECTED,(wxObjectEventFunction)&ArduinoInterfaceFrame::OnchSerialPortSelect);
     Connect(idMenuQuit,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&ArduinoInterfaceFrame::OnQuit);
     Connect(idMenuAbout,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&ArduinoInterfaceFrame::OnAbout);
     //*)
-    //serial.openPort(PORT);
 }
 
 
@@ -222,7 +230,7 @@ void ArduinoInterfaceFrame::OnQuit(wxCommandEvent& event)
 
 void ArduinoInterfaceFrame::OnchDevIDSelect(wxCommandEvent& event)
 {
-   int device = chDevID->GetSelection()+1;
+   int device = chDevID->GetCurrentSelection()+1;
 serial.setDevice(device); //+1 to reserve 0
 serial.transmit();
 
@@ -248,4 +256,10 @@ void ArduinoInterfaceFrame::closePortThenClose(wxCloseEvent& event)
 {
     serial.closePort();
     Destroy();
+}
+
+void ArduinoInterfaceFrame::OnchSerialPortSelect(wxCommandEvent& event)
+{
+    int newPort = chSerialPort->GetCurrentSelection();
+    serial.changePort(newPort);
 }

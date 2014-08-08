@@ -41,6 +41,7 @@ class ArduinoInterfaceFrame: public wxFrame
         void OnChoice2Select(wxCommandEvent& event);
         void OnchDevIDSelect(wxCommandEvent& event);
         void closePortThenClose(wxCloseEvent& event);
+        void OnchSerialPortSelect(wxCommandEvent& event);
         //*)
 
         //(*Identifiers(ArduinoInterfaceFrame)
@@ -54,6 +55,7 @@ class ArduinoInterfaceFrame: public wxFrame
         static const long ID_PANEL2;
         static const long ID_BUTTON1;
         static const long ID_STATICTEXT1;
+        static const long ID_CHOICE3;
         static const long idMenuQuit;
         static const long idMenuAbout;
         static const long ID_STATUSBAR1;
@@ -65,6 +67,7 @@ class ArduinoInterfaceFrame: public wxFrame
         wxPanel* Panel1;
         wxStatusBar* StatusBar1;
         wxButton* btnOff;
+        wxChoice* chSerialPort;
         wxButton* Button2;
         wxPanel* Panel2;
         wxStaticText* lblDevice;

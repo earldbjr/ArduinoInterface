@@ -1,11 +1,11 @@
 #include "arduinoserial.h"
 #include <fcntl.h>
 #include <termios.h>
-int ArduinoSerial::openPort(char PORT)
+int ArduinoSerial::openPort(int _PORT)
 {
-    ArduinoSerial::closePort();
-    char chPortName[13]="/dev/ttyACM0";
-    chPortName[13] = PORT;
+    char chPortName[13];//="/dev/ttyACM1";
+    sprintf(chPortName, "/dev/ttyACM%i", _PORT);
+    //chPortName[13] = chPORT;
 
     int fd = open(chPortName, O_RDWR | O_NOCTTY | O_NDELAY);
 
@@ -39,38 +39,82 @@ int ArduinoSerial::openPort(char PORT)
     return(fd);
 }
 
-ArduinoSerial::ArduinoSerial(char _PORT)
+void ArduinoSerial::closePort()
 {
-PORT = _PORT; //Changes # in /dev/ttyACM#
+    close(fd);
+}
+
+ArduinoSerial::ArduinoSerial()
+{
         chInstruction[0]='1';
         chInstruction[1]='0';
         chInstruction[2]='0';
         chInstruction[3]='0';
         chInstruction[4]='0';
         chInstruction[5]='\0';
-        ArduinoSerial::openPort(PORT);
-}
-
-
-
-void ArduinoSerial::closePort()
-{
-    close(fd);
 }
 
 int ArduinoSerial::transmit()
 {
+    ArduinoSerial::openPort(PORT);
     char buf[5];
     chInstruction[4]='4';//debugging
     int len = sprintf(buf, "%s", chInstruction);
-    return(write(fd, buf, len));//-1 = fail
+    int result =(write(fd, buf, len));//-1 = fail
+    ArduinoSerial::closePort();
+    return result;
 }
 
 void ArduinoSerial::changePort(int newPORT)
 {
+    static int port0Initialized=0, port1Initialized=0, port2Initialized=0, port3Initialized=0, port4Initialized=0;
+    static signed int oldPORT= -1;
+    PORT = newPORT;
+    //Forces the Arduino to reset once we select the correct port.
+    //Useful for finding the Arduino, and makes it ready for the first command.
+        if(oldPORT != PORT){
+        switch(PORT)
+            {
+            case 0:
+                if(port0Initialized==0){
+                    port0Initialized=1;
+                    goto InitializePort;
+                }
+                break;
+            case 1:
+                if(port1Initialized==0){
+                    port1Initialized=1;
+                    goto InitializePort;
+                }
+                break;
+            case 2:
+                if(port2Initialized==0){
+                    port2Initialized=1;
+                    goto InitializePort;
+                }
+                break;
+            case 3:
+                if(port3Initialized==0){
+                    port3Initialized=1;
+                    goto InitializePort;
+                }
+                break;
+            case 4:
+                if(port4Initialized==0){
+                    port4Initialized=1;
+                    goto InitializePort;
+                }
+                break;
+            default:
+                break;
+            InitializePort:
+        ArduinoSerial::openPort(PORT);
+        ArduinoSerial::transmit();
+        oldPORT = newPORT;
+        ArduinoSerial::closePort();
+        }
 
-    ArduinoSerial::closePort();
-    ArduinoSerial::openPort(newPORT);
+    }
 }
 
 void ArduinoSerial::setDevice       (int value){chInstruction[0] = (char)value+48;} //48 = ASCII 0

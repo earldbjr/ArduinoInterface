@@ -131,6 +131,21 @@
 						<border>5</border>
 						<option>1</option>
 					</object>
+					<object class="sizeritem">
+						<object class="wxChoice" name="ID_CHOICE3" variable="chSerialPort" member="yes">
+							<content>
+								<item>0</item>
+								<item>1</item>
+								<item>2</item>
+								<item>3</item>
+								<item>4</item>
+							</content>
+							<handler function="OnchSerialPortSelect" entry="EVT_CHOICE" />
+						</object>
+						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+						<border>5</border>
+						<option>1</option>
+					</object>
 				</object>
 				<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 				<border>5</border>

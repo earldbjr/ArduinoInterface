@@ -6,16 +6,16 @@
 class ArduinoSerial
 {
     public:
-        ArduinoSerial(char);
-        void closePort();
-        int openPort(char);
-        int transmit();
-        void changePort(int value);
-        void setDevice(int value);
-        void setFunction(int value);
-        void setInstruction(int value);
-        void setOpt1(int value);
-        void setOpt2(int value);
+        ArduinoSerial();                //Constructor, initializes chInstruction
+        void closePort();               //Closes fd
+        int openPort(int);              //Opens fd
+        int transmit();                 //Transmits chInstruction to Arduino
+        void changePort(int value);     //Changes variable PORT, used by openPort()
+        void setDevice(int value);      //chInstruction[0]
+        void setFunction(int value);    //chInstruction[1]
+        void setInstruction(int value); //chInstruction[2]
+        void setOpt1(int value);        //chInstruction[3]
+        void setOpt2(int value);        //chInstruction[4] (chInstruction[5]='\0')
         int getDevice();
         int getFunction();
         int getInstruction();
@@ -23,9 +23,9 @@ class ArduinoSerial
         int getOpt2();
     protected:
     private:
-        char chInstruction[5];
-        char PORT;
-        int fd;
+        char chInstruction[5];          //5 digit char array of options to be sent to Arduino
+        char PORT;                      //# in /dev/ttyACM#
+        int fd;                         //Serial port
 };
 
 #endif // ARDUINOSERIAL_H
